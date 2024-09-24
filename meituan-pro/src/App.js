@@ -11,7 +11,7 @@ import './App.scss'
 
 const App = () => {
   const dispatch = useDispatch()
-  const {foodsList} = useSelector((state) => state.food)
+  const {foodsList, actIndex} = useSelector((state) => state.food)
 
   useEffect(() => {
     dispatch(fetchFoods())
@@ -30,9 +30,9 @@ const App = () => {
           <div className="list-content">
             <div className="goods-list">
               {/* 外卖商品列表 */}
-              {foodsList.map(item => {
+              {foodsList.map((item, index) => {
                 return (
-                  <FoodsCategory
+                  actIndex === index && <FoodsCategory
                     key={item.tag}
                     // 列表标题
                     name={item.name}

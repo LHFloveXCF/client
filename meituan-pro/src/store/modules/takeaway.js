@@ -3,9 +3,10 @@ import axios from 'axios'
 
 const foodStore = createSlice({
     name: 'food',
+    actIndex: 0,
     initialState: {
         foodsList: [],
-        actIndex: 0
+        cartList: []
     },
 
     reducers: {
@@ -14,12 +15,20 @@ const foodStore = createSlice({
         },
         setActIndex(state, action) {
             state.actIndex = action.payload
+        },
+        addCart(state, action) {
+            const food = state.cartList.find(item => item.id === action.payload.id)
+            if (food){
+                food.count++
+            } else {
+                state.cartList.push(action.payload)
+            }
         }
     }
 
 })
 
-const { setFoods, setActIndex } = foodStore.actions
+const { setFoods, setActIndex , addCart} = foodStore.actions
 
 const fetchFoods = () => {
     return async (dispatch) => {
@@ -28,7 +37,7 @@ const fetchFoods = () => {
     }
 }
 
-export { fetchFoods, setActIndex }
+export { fetchFoods, setActIndex, addCart }
 
 const reducer = foodStore.reducer
 export default reducer
