@@ -140,24 +140,4 @@
     margin: 0px 0;
     position: relative;
   }
-  .plus::after {
-    position: absolute;
-    height: 2px;
-    width: 50%;
-    content: '';
-    background-color: #c8c02b;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  .plus::before {
-    position: absolute;
-    height: 50%;
-    background-color: #c8c02b;
-    width: 2px;
-    content: '';
-    top: 50%;
-    right: 45%;
-    transform: translateY(-50%);
-  }
 }

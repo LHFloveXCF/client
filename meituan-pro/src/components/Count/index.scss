@@ -7,20 +7,20 @@
 
   .minus,
   .plus {
-    width: 20px;
-    height: 20px;
-    background-size: 20px 20px;
+    width: 30px;
+    height: 30px;
+    background-size: 30px 30px;
     position: relative;
   }
   .minus {
-    margin-right: 12.5px;
-    background-image: url(https://zqran.gitee.io/images/waimai/minus.png);
+    margin-right: 2.5px;
+    background-image: url(../../../public/image/minus.jpeg);
     background-repeat: no-repeat;
     background-position: center center;
   }
   .plus {
-    margin-left: 12.5px;
-    background-image: url(https://zqran.gitee.io/images/waimai/plus.png);
+    margin-left: 2.5px;
+    background-image: url(../../../public/image/plus.jpeg);
     background-repeat: no-repeat;
     background-position: center center;
   }
