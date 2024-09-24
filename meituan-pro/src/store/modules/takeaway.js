@@ -4,18 +4,22 @@ import axios from 'axios'
 const foodStore = createSlice({
     name: 'food',
     initialState: {
-        foodsList: []
+        foodsList: [],
+        actIndex: 0
     },
 
     reducers: {
         setFoods(state, action) {
             state.foodsList = action.payload
+        },
+        setActIndex(state, action) {
+            state.actIndex = action.payload
         }
     }
 
 })
 
-const { setFoods } = foodStore.actions
+const { setFoods, setActIndex } = foodStore.actions
 
 const fetchFoods = () => {
     return async (dispatch) => {
@@ -24,7 +28,7 @@ const fetchFoods = () => {
     }
 }
 
-export { fetchFoods }
+export { fetchFoods, setActIndex }
 
 const reducer = foodStore.reducer
 export default reducer
