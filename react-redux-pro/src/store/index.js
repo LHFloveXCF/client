@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import counterReduce from "./modules/counterStore";
+import channelReduce from './modules/channelStore'
 
 const store = configureStore({
     reducer: {
-        counter: counterReduce
+        counter: counterReduce,
+        channel: channelReduce
     }
 })
 
