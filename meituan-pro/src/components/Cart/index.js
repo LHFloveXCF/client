@@ -3,21 +3,33 @@ import Count from '../Count'
 import './index.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearCart, onMinus, onPlus } from '../../store/modules/takeaway'
+import { useState } from 'react'
 
 const Cart = () => {
-  const {cartList} = useSelector(state => state.food)
+  const { cartList } = useSelector(state => state.food)
   const totalPrice = cartList.reduce((a, c) => a + c.price * c.count, 0)
   const dispatch = useDispatch()
+  const [ cartState, setCartState ] = useState(false)
+
+  function onShow() {
+    console.log(cartList.length);
+    
+    if (cartList.length > 0) {
+      setCartState(true)
+    }
+  }
+
   return (
     <div className="cartContainer">
       {/* 遮罩层 添加visible类名可以显示出来 */}
       <div
-        className={classNames('cartOverlay')}
+        className={classNames('cartOverlay', cartState && 'visible')}
+        onClick={() => setCartState(false)}
       />
       <div className="cart">
         {/* fill 添加fill类名可以切换购物车状态*/}
         {/* 购物车数量 */}
-        <div className={classNames('icon', cartList.length > 0 && 'fill')}>
+        <div className={classNames('icon', cartList.length > 0 && 'fill')} onClick={() => onShow()}>
           {cartList.length > 0 && <div className="cartCornerMark">{cartList.length}</div>}
         </div>
         {/* 购物车价格 */}
@@ -38,7 +50,7 @@ const Cart = () => {
         )}
       </div>
       {/* 添加visible类名 div会显示出来 */}
-      <div className={classNames('cartPanel', 'visible')}>
+      <div className={classNames('cartPanel', cartState && 'visible')}>
         <div className="header">
           <span className="text">购物车</span>
           <span className="clearCart" onClick={() => dispatch(clearCart())}>
@@ -64,8 +76,8 @@ const Cart = () => {
                 <div className="skuBtnWrapper btnGroup">
                   <Count
                     count={item.count}
-                    onMinus={() => dispatch(onMinus({id: item.id}))}
-                    onPlus={() => dispatch(onPlus({id: item.id}))}
+                    onMinus={() => dispatch(onMinus({ id: item.id }))}
+                    onPlus={() => dispatch(onPlus({ id: item.id }))}
                   />
                 </div>
               </div>
