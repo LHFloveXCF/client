@@ -23,12 +23,32 @@ const foodStore = createSlice({
             } else {
                 state.cartList.push(action.payload)
             }
+        },
+        onPlus(state, action) {
+            const food = state.cartList.find(item => item.id === action.payload.id)
+            if (food) {
+                food.count++
+            }
+        },
+        onMinus(state, action) {
+            const food = state.cartList.find(item => item.id === action.payload.id)
+            if (food && food.count > 0) {
+                food.count--
+
+                if (food.count == 0) {
+                    state.cartList.pop(food)
+                }
+            }
+        },
+        clearCart(state, action) {
+            state.cartList = []
         }
+
     }
 
 })
 
-const { setFoods, setActIndex , addCart} = foodStore.actions
+const { setFoods, setActIndex , addCart, onPlus, onMinus, clearCart} = foodStore.actions
 
 const fetchFoods = () => {
     return async (dispatch) => {
@@ -37,7 +57,7 @@ const fetchFoods = () => {
     }
 }
 
-export { fetchFoods, setActIndex, addCart }
+export { fetchFoods, setActIndex, addCart, onPlus, onMinus, clearCart }
 
 const reducer = foodStore.reducer
 export default reducer

@@ -1,11 +1,13 @@
 import classNames from 'classnames'
 import Count from '../Count'
 import './index.scss'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearCart, onMinus, onPlus } from '../../store/modules/takeaway'
 
 const Cart = () => {
   const {cartList} = useSelector(state => state.food)
   const totalPrice = cartList.reduce((a, c) => a + c.price * c.count, 0)
+  const dispatch = useDispatch()
   return (
     <div className="cartContainer">
       {/* 遮罩层 添加visible类名可以显示出来 */}
@@ -39,7 +41,7 @@ const Cart = () => {
       <div className={classNames('cartPanel', 'visible')}>
         <div className="header">
           <span className="text">购物车</span>
-          <span className="clearCart">
+          <span className="clearCart" onClick={() => dispatch(clearCart())}>
             清空购物车
           </span>
         </div>
@@ -62,6 +64,8 @@ const Cart = () => {
                 <div className="skuBtnWrapper btnGroup">
                   <Count
                     count={item.count}
+                    onMinus={() => dispatch(onMinus({id: item.id}))}
+                    onPlus={() => dispatch(onPlus({id: item.id}))}
                   />
                 </div>
               </div>
