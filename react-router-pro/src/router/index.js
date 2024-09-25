@@ -5,6 +5,7 @@ import Layout from '../page/layout'
 import Board from '../page/board'
 import About from '../page/about'
 import Detail from '../page/detail'
+import NotFound from '../page/notFound'
 
 const router = createBrowserRouter([
     {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
     {
         path: "/login/:id",
         element: <Login />
+    },
+    {
+        path: '*',
+        element: <NotFound/>
     }
 ])
 

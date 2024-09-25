@@ -1,5 +1,5 @@
 import { Link, useParams, useSearchParams } from "react-router-dom"
-function Login() {
+const  Login = () => {
     const params = useParams()
     let id = params.id
 
