@@ -3,10 +3,10 @@ import axios from 'axios'
 
 const foodStore = createSlice({
     name: 'food',
-    actIndex: 0,
     initialState: {
         foodsList: [],
-        cartList: []
+        cartList: [],
+        actIndex: 0
     },
 
     reducers: {
