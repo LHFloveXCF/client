@@ -9,6 +9,7 @@ import {
     CalculatorOutline,
     AddCircleOutline
   } from 'antd-mobile-icons'
+import { useNavigate } from "react-router-dom/dist"
 
   const tabs = [
     {
@@ -37,13 +38,18 @@ const Layout = () => {
         dispatch(getBillList())
     }, [dispatch])
 
+    const navigate = useNavigate()
+    const switchRoute = (path) => {
+        navigate(path)
+    }
+
     return (
         <div className="layout">
       <div className="container">
         <Outlet />
       </div>
       <div className="footer">
-        <TabBar>
+        <TabBar onChange={switchRoute}>
           {tabs.map(item => (
             <TabBar.Item key={item.key} icon={item.icon} title={item.title} />
           ))}
