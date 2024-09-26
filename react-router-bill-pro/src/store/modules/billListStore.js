@@ -17,7 +17,7 @@ const billStore = createSlice({
 })
 
 // 解构出对应的方法
-const { setBillList } = billStore.actions
+const { setBillList,  setDateSelect } = billStore.actions
 // 获取账单列表
 const getBillList = () => {
     return async (dispatch) => {
