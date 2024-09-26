@@ -7,39 +7,42 @@ import { useSelector } from 'react-redux'
 import _ from 'lodash'
 
 const Month = () => {
-    const [state, setState] = useState(false)
+  const [state, setState] = useState(false)
 
-    const {billList} = useSelector(state => state.bills)
-    const monthGroup = useMemo(() => {
-      return _.groupBy(billList, (item) => dayjs(item.date).format('YYYY | M'))
-    }, [billList])
+  const { billList } = useSelector(state => state.bills)
+  const monthGroup = useMemo(() => {
+    return _.groupBy(billList, (item) => dayjs(item.date).format('YYYY | M'))
+  }, [billList])
+
+  const [dateNow, setDate] = useState(() => {
+    return dayjs().format('YYYY | M')
+  })
+
+  const [currentGroup, setCurrentGroup] = useState(() => {
+    return monthGroup[dateNow] ? monthGroup[dateNow] : []
+  })
+
+  // console.log(monthGroup);
 
 
-    const [currentGroup, setCurrentGroup] = useState([])
 
-    // console.log(monthGroup);
+  function onConfirmDate(date) {
+    setState(false)
+    const formatDate = dayjs(date).format('YYYY | M')
+    setDate(formatDate)
 
-    const [dateNow, setDate] = useState(() => {
-        return dayjs().format('YYYY | M')
-    })
+    setCurrentGroup(monthGroup[formatDate] ? monthGroup[formatDate] : [])
+  }
 
-    function onConfirmDate(date) {
-        setState(false)
-        const formatDate = dayjs(date).format('YYYY | M')
-        setDate(formatDate)
-
-        setCurrentGroup(monthGroup[formatDate] ? monthGroup[formatDate] : [])
+  const currentResult = useMemo(() => {
+    const pay = currentGroup.filter(item => item.type === 'pay').reduce((a, c) => a + c.money, 0)
+    const get = currentGroup.filter(item => item.type === 'income').reduce((a, c) => a + c.money, 0)
+    return {
+      pay, get, total: pay + get
     }
+  }, [currentGroup])
 
-    const currentResult = useMemo(() => {
-      const pay = currentGroup.filter(item => item.type === 'pay').reduce((a, c) => a + c.money, 0)
-      const get = currentGroup.filter(item => item.type === 'income').reduce((a, c) => a + c.money, 0)
-      return {
-        pay, get, total : pay + get 
-      }
-    }, [currentGroup])
-
-    // console.log(currentResult);
+  // console.log(currentResult);
 
   return (
     <div className="monthlyBill">
@@ -53,7 +56,7 @@ const Month = () => {
             <span className="text">
               {dateNow}账单
             </span>
-            <span className= {classNames('arrow', state && 'expand')}></span>
+            <span className={classNames('arrow', state && 'expand')}></span>
           </div>
           {/* 统计区域 */}
           <div className='twoLineOverview'>
