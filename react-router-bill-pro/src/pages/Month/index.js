@@ -1,11 +1,20 @@
 import { NavBar, DatePicker } from 'antd-mobile'
 import './index.scss'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
+import { useSelector } from 'react-redux'
+import _ from 'lodash'
 
 const Month = () => {
     const [state, setState] = useState(false)
+
+    const {billList} = useSelector(state => state.bills)
+    const monthGroup = useMemo(() => {
+      return _.groupBy(billList, (item) => dayjs(item.date).format('YYYY | M '))
+    }, [billList])
+    console.log(monthGroup);
+    
 
     const [dateNow, setDate] = useState(() => {
         return dayjs().format('YYYY | M ')
@@ -54,7 +63,7 @@ const Month = () => {
             visible={state}
             onCancel={() => setState(false)}
             onClose={() => setState(false)}
-            onConfirm={() => onConfirmDate()}
+            onConfirm={(value) => onConfirmDate(value)}
             max={new Date()}
           />
         </div>
