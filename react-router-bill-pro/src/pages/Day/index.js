@@ -49,7 +49,7 @@ const DailyBill = ({ date, dayBillList }) => {
                             <div className="bill" key={item.id}>
                                 <div className="detail">
                                     <div className="billType">
-                                        <Icon /> {billTypeToName[item.useFor]}
+                                        <Icon type={item.useFor}/> {billTypeToName[item.useFor]}
                                     </div>
                                 </div>
                                 <div className={classNames('money', item.type)}>
