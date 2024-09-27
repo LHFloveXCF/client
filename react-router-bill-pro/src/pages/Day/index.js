@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import './index.scss'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { billTypeToName } from '@/constants/billType'
 
 // 用{}来接受其它组件传入的参数；参数名字已经定义好的
@@ -19,12 +19,13 @@ const DailyBill = ({ date, dayBillList }) => {
     }, [dayBillList])
 
     // 使用useState控制账单的打开和关闭
+    const [visible, setVisible] = useState(false)
     return (
-        <div className={classNames('dailyBill')}>
+        <div className={classNames('dailyBill')} onClick={() => setVisible(!visible)}>
             <div className="header">
                 <div className="dateIcon">
                     <span className="date">{date}</span>
-                    <span className={classNames('arrow')}></span>
+                    <span className={classNames('arrow', !visible && 'expand')}></span>
                 </div>
                 <div className="oneLineOverview">
                     <div className="pay">
@@ -41,7 +42,7 @@ const DailyBill = ({ date, dayBillList }) => {
                     </div>
                 </div>
                 {/* 单日列表 */}
-                <div className="billList">
+                <div className="billList" style={{display: !visible && 'none'}}>
                     {dayBillList.map(item => {
                         return (
                             <div className="bill" key={item.id}>
