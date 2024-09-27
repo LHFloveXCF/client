@@ -1,10 +1,11 @@
 import { NavBar, DatePicker } from 'antd-mobile'
 import './index.scss'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
 import { useSelector } from 'react-redux'
 import _ from 'lodash'
+import DailyBill from '../Day'
 
 const Month = () => {
   const [state, setState] = useState(false)
@@ -18,31 +19,42 @@ const Month = () => {
     return dayjs().format('YYYY | M')
   })
 
-  const [currentGroup, setCurrentGroup] = useState(() => {
-    return monthGroup[dateNow] ? monthGroup[dateNow] : []
-  })
+  // 月账单集合
+  const [currentMonthGroup, setCurrentMonthGroup] = useState([])
 
-  // console.log(monthGroup);
-
-
-
+  // 打开界面即计算月账单
+  useEffect(() => {
+    const now = dayjs().format('YYYY | M')
+    const dataCurMonth = monthGroup[now]
+    if (dataCurMonth) {
+        setCurrentMonthGroup(dataCurMonth)
+    }
+  }, [monthGroup])
+  // 点击确定选择时间后的操作
   function onConfirmDate(date) {
     setState(false)
     const formatDate = dayjs(date).format('YYYY | M')
     setDate(formatDate)
 
-    setCurrentGroup(monthGroup[formatDate] ? monthGroup[formatDate] : [])
+    setCurrentMonthGroup(monthGroup[formatDate] ? monthGroup[formatDate] : [])
   }
-
+  // 计算当月的统计数据
   const currentResult = useMemo(() => {
-    const pay = currentGroup.filter(item => item.type === 'pay').reduce((a, c) => a + c.money, 0)
-    const get = currentGroup.filter(item => item.type === 'income').reduce((a, c) => a + c.money, 0)
+    const pay = currentMonthGroup.filter(item => item.type === 'pay').reduce((a, c) => a + c.money, 0)
+    const get = currentMonthGroup.filter(item => item.type === 'income').reduce((a, c) => a + c.money, 0)
     return {
       pay, get, total: pay + get
     }
-  }, [currentGroup])
-
-  // console.log(currentResult);
+  }, [currentMonthGroup])
+  // 根据传入的月账单，获取日账单集合
+  const currentDayResult = useMemo(() => {
+    const group = _.groupBy(currentMonthGroup, (item) => dayjs(item.date).format('YYYY-MM-DD'))
+    return {
+      dataKeys: Object.keys(group),
+      group
+  }
+  }, [currentMonthGroup])
+  
 
   return (
     <div className="monthlyBill">
@@ -85,6 +97,11 @@ const Month = () => {
             max={new Date()}
           />
         </div>
+        {/**渲染组件必须有其对应的key;且是唯一的 */}
+        {currentDayResult.dataKeys.map(dataKey => (
+            <DailyBill key={dataKey} date = {dataKey} dayBillList={currentDayResult.group[dataKey]} />
+        ))}
+        
       </div>
     </div >
   )
