@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import './index.scss'
 import { useMemo, useState } from 'react'
 import { billTypeToName } from '@/constants/billType'
+import Icon from '@/constants/icon'
 
 // 用{}来接受其它组件传入的参数；参数名字已经定义好的
 const DailyBill = ({ date, dayBillList }) => {
@@ -42,12 +43,14 @@ const DailyBill = ({ date, dayBillList }) => {
                     </div>
                 </div>
                 {/* 单日列表 */}
-                <div className="billList" style={{display: !visible && 'none'}}>
+                <div className="billList" style={{ display: !visible && 'none' }}>
                     {dayBillList.map(item => {
                         return (
                             <div className="bill" key={item.id}>
                                 <div className="detail">
-                                    <div className="billType">{billTypeToName[item.useFor]}</div>
+                                    <div className="billType">
+                                        <Icon /> {billTypeToName[item.useFor]}
+                                    </div>
                                 </div>
                                 <div className={classNames('money', item.type)}>
                                     {item.money.toFixed(2)}
