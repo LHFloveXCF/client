@@ -10,6 +10,9 @@ const billStore = createSlice({
     reducers: {
         setBillList(state, action) {
             state.billList = action.payload
+        },
+        addBill(state, action) {
+            state.billList.push(action.payload)
         }
 
     }
@@ -17,7 +20,7 @@ const billStore = createSlice({
 })
 
 // 解构出对应的方法
-const { setBillList,  setDateSelect } = billStore.actions
+const { setBillList,  setDateSelect, addBill } = billStore.actions
 // 获取账单列表
 const getBillList = () => {
     return async (dispatch) => {
@@ -26,7 +29,7 @@ const getBillList = () => {
     }
 }
 
-export { getBillList, setBillList }
+export { getBillList, setBillList, addBill }
 
 const billReducer = billStore.reducer
 export default billReducer
