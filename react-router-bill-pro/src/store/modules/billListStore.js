@@ -29,7 +29,15 @@ const getBillList = () => {
     }
 }
 
-export { getBillList, setBillList, addBill }
+// 设置账单列表
+const setBillListToDb = (data) => {
+    return async (dispatch) => {
+        const res = await axios.post('http://localhost:8888/ka', data)        
+        dispatch(addBill(res.data))
+    }
+}
+
+export { getBillList, setBillListToDb }
 
 const billReducer = billStore.reducer
 export default billReducer

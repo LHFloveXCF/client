@@ -7,9 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import dayjs from 'dayjs'
 import { useDispatch } from 'react-redux'
-import { addBill } from '@/store/modules/billListStore'
-import { type } from '@testing-library/user-event/dist/type'
-import { uniqueId } from 'lodash'
+import { setBillListToDb } from '@/store/modules/billListStore'
 
 const New = () => {
     const navigate = useNavigate()
@@ -20,7 +18,7 @@ const New = () => {
     // 账单日期选择框
     const [billDateState, setBillDateState] = useState(false)
     // 账单日期
-    const [billDate, setBillDate] = useState('今天')
+    const [billDate, setBillDate] = useState(new Date())
     // 账单总额
     const [billCount, setBillCount] = useState("")
     function changeCount(value) {
@@ -30,23 +28,25 @@ const New = () => {
 
     const dispatch = useDispatch()
     const saveBill = () => {
+        if (billCount <= 0) {
+            return
+        }
         const newBill = {
             type:billType,
             money:billType === 'income' ? +billCount : -billCount,
             useFor:billOpsFor,
-            date: dayjs().format(),
-            id: uniqueId()
+            date: billDate
         }
-
         console.log(newBill);
         
-
-        dispatch(addBill(newBill))
+        dispatch(setBillListToDb(newBill))
     }
 
     function confirmBillDate(selectDate) {
         setBillDateState(false)
-        setBillDate(dayjs(selectDate).format('MM-DD'))
+        console.log(selectDate);
+        
+        setBillDate(dayjs(selectDate).format())
     }
     return (
         <div className="keepAccounts">
@@ -76,7 +76,7 @@ const New = () => {
                     <div className="kaForm">
                         <div className="date"  onClick={() => setBillDateState(true)} >
                             <Icon type="calendar" className="icon"/>
-                            <span className="text">{billDate}</span>
+                            <span className="text">{dayjs(billDate).format('MM-DD')}</span>
                             <DatePicker
                                 className="kaDate"
                                 title="记账日期"
